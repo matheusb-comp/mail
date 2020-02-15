@@ -1,0 +1,51 @@
+## Postfix general configuration
+maillog_file = /dev/stdout
+
+## Main domain and mailbox configuration
+#mydomain = {{DOMAIN}}
+#myorigin = $mydomain
+#mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
+mynetworks_style = host
+#mynetworks = 168.100.189.0/28, 127.0.0.0/8
+relayhost =
+#relay_recipient_maps = hash:/etc/postfix/relay_recipients
+
+## Let local delivery to Dovecot's LMTP
+virtual_transport = lmtp:unix:private/dovecot-lmtp
+
+## Virtual domains, users, and aliases
+virtual_mailbox_domains = pgsql:/etc/postfix/vbox-domains.cf
+virtual_mailbox_maps = pgsql:/etc/postfix/vbox-maps.cf
+virtual_alias_maps = pgsql:/etc/postfix/valias-maps.cf
+
+## SSL/TLS configuration
+smtpd_tls_security_level = may
+smtp_tls_session_cache_database = btree:$data_directory/smtp_scache
+smtpd_tls_session_cache_database = btree:$data_directory/smtpd_scache
+smtpd_tls_cert_file = /etc/letsencrypt/live/{{DOMAIN}}/fullchain.pem
+smtpd_tls_key_file = /etc/letsencrypt/live/{{DOMAIN}}/privkey.pem
+
+## Alpine linux package default configuration parameters
+compatibility_level = 2
+queue_directory = /var/spool/postfix
+command_directory = /usr/sbin
+daemon_directory = /usr/libexec/postfix
+data_directory = /var/lib/postfix
+mail_owner = postfix
+unknown_local_recipient_reject_code = 550
+debug_peer_level = 2
+debugger_command = PATH=/bin:/usr/bin:/usr/local/bin:/usr/X11R6/bin
+  ddd $daemon_directory/$process_name $process_id & sleep 5
+
+## Install-time configuration (parameters used installing a new Postfix version)
+sendmail_path = /usr/sbin/sendmail
+newaliases_path = /usr/bin/newaliases
+mailq_path = /usr/bin/mailq
+setgid_group = postdrop
+html_directory = no
+manpage_directory = /usr/share/man
+sample_directory = /etc/postfix
+readme_directory = /usr/share/doc/postfix/readme
+inet_protocols = ipv4
+meta_directory = /etc/postfix
+shlib_directory = /usr/lib/postfix

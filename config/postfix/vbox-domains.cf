@@ -1,0 +1,4 @@
+# Check the database for the domain existance
+query = SELECT 1 FROM virtual_domains WHERE domain = '%s'
+
+# Concatenate the file pgsql.cf here

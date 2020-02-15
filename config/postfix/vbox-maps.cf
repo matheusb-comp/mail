@@ -1,0 +1,4 @@
+# Check the database for the user existance
+query = SELECT 1 FROM virtual_users WHERE email = '%s'
+
+# Concatenate the file pgsql.cf here

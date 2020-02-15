@@ -1,0 +1,4 @@
+# Check the database for the user alias destination
+query = SELECT destination FROM virtual_aliases WHERE source = '%s'
+
+# Concatenate the file pgsql.cf here
