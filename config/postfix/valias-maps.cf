@@ -1,4 +1,6 @@
-# Check the database for the user alias destination
-query = SELECT destination FROM virtual_aliases WHERE source = '%s'
+# Get the alias destination from the database
+query = SELECT destination
+  FROM virtual_aliases AS a INNER JOIN virtual_domains AS d ON d.id = domain_id
+  WHERE source = '%u' AND domain = '%d'
 
 # Concatenate the file pgsql.cf here

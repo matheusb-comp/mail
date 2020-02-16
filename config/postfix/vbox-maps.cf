@@ -1,4 +1,6 @@
-# Check the database for the user existance
-query = SELECT 1 FROM virtual_users WHERE email = '%s'
+# Check the database for the user existence
+query = SELECT 1
+  FROM virtual_users AS u INNER JOIN virtual_domains AS d ON d.id = domain_id
+  WHERE email = '%u' AND domain = '%d'
 
 # Concatenate the file pgsql.cf here

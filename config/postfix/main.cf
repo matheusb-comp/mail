@@ -10,6 +10,47 @@ mynetworks_style = host
 relayhost =
 #relay_recipient_maps = hash:/etc/postfix/relay_recipients
 
+## SSL/TLS configuration
+#smtpd_use_tls=yes
+smtp_tls_security_level = may
+smtpd_tls_security_level = may
+#smtp_tls_session_cache_database = btree:$data_directory/smtp_scache
+#smtpd_tls_session_cache_database = btree:$data_directory/smtpd_scache
+smtpd_tls_cert_file = /etc/letsencrypt/live/{{DOMAIN}}/fullchain.pem
+smtpd_tls_key_file = /etc/letsencrypt/live/{{DOMAIN}}/privkey.pem
+
+## Enable SASL Authentication using Dovecot's implementation
+smtpd_sasl_type = dovecot
+smtpd_sasl_path = private/auth
+smtpd_sasl_auth_enable = yes
+broken_sasl_auth_clients = yes
+smtpd_tls_auth_only = yes
+smtpd_sasl_security_options = noanonymous, noplaintext
+smtpd_sasl_tls_security_options = noanonymous
+
+# Main restrictions
+smtpd_helo_restrictions =
+  permit_mynetworks,
+  permit_sasl_authenticated,
+  reject_invalid_helo_hostname,
+  reject_non_fqdn_helo_hostname
+smtpd_recipient_restrictions =
+  permit_mynetworks,
+  permit_sasl_authenticated,
+  reject_non_fqdn_recipient,
+  reject_unknown_recipient_domain,
+  reject_unlisted_recipient,
+  reject_unauth_destination
+smtpd_sender_restrictions =
+  permit_mynetworks,
+  permit_sasl_authenticated,
+  reject_non_fqdn_sender,
+  reject_unknown_sender_domain
+smtpd_relay_restrictions =
+  permit_mynetworks,
+  permit_sasl_authenticated,
+  defer_unauth_destination
+
 ## Let local delivery to Dovecot's LMTP
 virtual_transport = lmtp:unix:private/dovecot-lmtp
 
@@ -18,12 +59,31 @@ virtual_mailbox_domains = pgsql:/etc/postfix/vbox-domains.cf
 virtual_mailbox_maps = pgsql:/etc/postfix/vbox-maps.cf
 virtual_alias_maps = pgsql:/etc/postfix/valias-maps.cf
 
-## SSL/TLS configuration
-smtpd_tls_security_level = may
-smtp_tls_session_cache_database = btree:$data_directory/smtp_scache
-smtpd_tls_session_cache_database = btree:$data_directory/smtpd_scache
-smtpd_tls_cert_file = /etc/letsencrypt/live/{{DOMAIN}}/fullchain.pem
-smtpd_tls_key_file = /etc/letsencrypt/live/{{DOMAIN}}/privkey.pem
+## Extra restrictions and MTA parameters
+disable_vrfy_command = yes
+strict_rfc821_envelopes = yes
+smtpd_helo_required = yes
+#smtpd_etrn_restrictions = reject
+#smtpd_reject_unlisted_sender = yes
+#smtpd_hard_error_limit = 1
+#smtpd_timeout = 30s
+#smtp_helo_timeout = 15s
+#smtp_rcpt_timeout = 15s
+smtpd_recipient_limit = 40
+minimal_backoff_time = 180s
+maximal_backoff_time = 3h
+
+# Reply Rejection Codes
+# From https://www.linode.com/docs/email/postfix/email-with-postfix-dovecot-and-mysql/
+# Disabled. Since Postfix docs says:
+# 'Do not change this unless you have a complete understanding of RFC 5321.'
+#invalid_hostname_reject_code = 550
+#non_fqdn_reject_code = 550
+#unknown_address_reject_code = 550
+#unknown_client_reject_code = 550
+#unknown_hostname_reject_code = 550
+#unverified_recipient_reject_code = 550
+#unverified_sender_reject_code = 550
 
 ## Alpine linux package default configuration parameters
 compatibility_level = 2

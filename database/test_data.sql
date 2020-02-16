@@ -22,6 +22,6 @@ VALUES
 INSERT INTO virtual_aliases
   (domain_id, source, destination, created_at, updated_at)
 VALUES
-  (1, 'alias', 'name1', NOW(), NOW()),
-  (2, 'alias', 'name3', NOW(), NOW()),
-  (3, 'alias', 'name', NOW(), NOW());
+  (1, 'alias', 'name1@example.com', NOW(), NOW()),
+  (2, 'alias', 'name3@other.place', NOW(), NOW()),
+  (3, 'alias', 'name2@hostname', NOW(), NOW());

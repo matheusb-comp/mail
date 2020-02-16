@@ -13,7 +13,10 @@ WORKDIR /app
 
 # General configurations
 RUN rm /etc/supervisord.conf && \
-  mkdir -p /var/log/supervisor
+  mkdir -p /var/log/supervisor && \
+  chmod -R 600 /etc/postfix
+
+RUN newaliases
 
 ENTRYPOINT ["/entrypoint/main.sh"]
 
