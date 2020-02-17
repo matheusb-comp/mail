@@ -7,17 +7,18 @@ maillog_file = /dev/stdout
 #mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
 mynetworks_style = host
 #mynetworks = 168.100.189.0/28, 127.0.0.0/8
-relayhost =
+relayhost = [smtp.gmail.com]:587
 #relay_recipient_maps = hash:/etc/postfix/relay_recipients
 
 ## SSL/TLS configuration
-#smtpd_use_tls=yes
+smtp_use_tls = yes
+smtpd_use_tls = yes
 smtp_tls_security_level = may
 smtpd_tls_security_level = may
 #smtp_tls_session_cache_database = btree:$data_directory/smtp_scache
 #smtpd_tls_session_cache_database = btree:$data_directory/smtpd_scache
-smtpd_tls_cert_file = /etc/ssl/dovecot/server.pem
-smtpd_tls_key_file = /etc/ssl/dovecot/server.key
+smtpd_tls_cert_file = {{TLS_CERT}}
+smtpd_tls_key_file = {{TLS_KEY}}
 
 ## Enable SASL Authentication using Dovecot's implementation
 smtpd_sasl_type = dovecot

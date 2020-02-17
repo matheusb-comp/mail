@@ -1,6 +1,8 @@
+# Database connection string
+hosts = {{DATABASE_URL}}
+dbname = unused
+
 # Get the alias destination from the database
 query = SELECT destination
   FROM virtual_aliases AS a INNER JOIN virtual_domains AS d ON d.id = domain_id
   WHERE a.source = '%u' AND d.domain = '%d' AND d.active = TRUE
-
-# Concatenate the file pgsql.cf here

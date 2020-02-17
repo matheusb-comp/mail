@@ -1,4 +1,6 @@
+# Database connection string
+hosts = {{DATABASE_URL}}
+dbname = unused
+
 # Check the database for the domain existence
 query = SELECT 1 FROM virtual_domains WHERE domain = '%s' AND active = TRUE
-
-# Concatenate the file pgsql.cf here

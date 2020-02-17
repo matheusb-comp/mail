@@ -1,0 +1,16 @@
+# This file is commonly accessed via passdb {} section in
+# conf.d/auth-oauth2.conf.ext
+
+tokeninfo_url = https://www.googleapis.com/oauth2/v3/tokeninfo?access_token=
+
+introspection_url = https://www.googleapis.com/oauth2/v2/userinfo
+
+#force_introspection = yes
+
+username_attribute = email
+
+#tls_ca_cert_file = /etc/ssl/certs/ca-certificates.crt
+
+# Debug this connection
+debug =  yes
+rawlog_dir = /tmp/oauth2

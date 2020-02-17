@@ -1,0 +1,19 @@
+# This file is commonly accessed via passdb {} or userdb {} section in
+# conf.d/auth-sql.conf.ext
+
+# This file is opened as root, so it should be owned by root and mode 0600.
+#
+# http://wiki2.dovecot.org/AuthDatabase/SQL
+
+# See example-config/dovecot-sql.conf.ext in:
+# https://github.com/dovecot/core/tree/master/doc/example-config
+
+driver = pgsql
+
+connect = {{DATABASE_URL}}
+
+default_pass_scheme = BLF-CRYPT
+
+password_query = SELECT email AS username, domain, password \
+  FROM virtual_users AS u INNER JOIN virtual_domains AS d ON d.id = domain_id \
+  WHERE u.email = '%n' AND d.domain = '%d' AND d.active = TRUE

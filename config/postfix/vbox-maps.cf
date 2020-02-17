@@ -1,6 +1,8 @@
+# Database connection string
+hosts = {{DATABASE_URL}}
+dbname = unused
+
 # Check the database for the user existence
 query = SELECT 1
   FROM virtual_users AS u INNER JOIN virtual_domains AS d ON d.id = domain_id
   WHERE u.email = '%u' AND d.domain = '%d' AND d.active = TRUE
-
-# Concatenate the file pgsql.cf here

@@ -1,0 +1,14 @@
+# Authentication for OAuth2 providers. Included from 10-auth.conf.
+#
+# https://doc.dovecot.org/configuration_manual/authentication/oauth2
+
+passdb {
+  driver = oauth2
+  mechanisms = oauthbearer xoauth2
+  args = /etc/dovecot/oauth2-google.conf.ext
+}
+
+userdb {
+  driver = static
+  args = uid=mailuser gid=mailuser home=/var/mail/virtual/%d/%n
+}
