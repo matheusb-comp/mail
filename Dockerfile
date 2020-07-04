@@ -4,6 +4,9 @@ RUN apk add --update --no-cache \
   supervisor \
   postfix \
   postfix-pgsql \
+  cyrus-sasl \
+  cyrus-sasl-login \
+  cyrus-sasl-plain \
   dovecot \
   dovecot-lmtpd \
   dovecot-pop3d \

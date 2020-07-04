@@ -7,20 +7,30 @@ maillog_file = /dev/stdout
 #mydestination = $myhostname, localhost.$mydomain, localhost, $mydomain
 mynetworks_style = host
 #mynetworks = 168.100.189.0/28, 127.0.0.0/8
-relayhost = [smtp.gmail.com]:587
+relayhost = [smtp-relay.sendinblue.com]:587
 #relay_recipient_maps = hash:/etc/postfix/relay_recipients
+
+##
+## SMTP client configurations
+##
+
+## Use the Cyrus implementation for SASL authentication (postconf -A)
+smtp_sasl_type = cyrus
+smtp_sasl_auth_enable = yes
+smtp_sasl_security_options = noanonymous, noplaintext
+smtp_sasl_tls_security_options = noanonymous
+smtp_sasl_password_maps = pgsql:/etc/postfix/sasl_password.cf
 
 ## SSL/TLS configuration
 smtp_use_tls = yes
-smtpd_use_tls = yes
-smtp_tls_security_level = may
-smtpd_tls_security_level = may
+smtp_tls_security_level = encrypt
 #smtp_tls_session_cache_database = btree:$data_directory/smtp_scache
-#smtpd_tls_session_cache_database = btree:$data_directory/smtpd_scache
-smtpd_tls_cert_file = {{TLS_CERT}}
-smtpd_tls_key_file = {{TLS_KEY}}
 
-## Enable SASL Authentication using Dovecot's implementation
+##
+## SMTP server configurations
+##
+
+## Use the Dovecot implementation for SASL authentication (postconf -a)
 smtpd_sasl_type = dovecot
 smtpd_sasl_path = private/auth
 smtpd_sasl_auth_enable = yes
@@ -28,6 +38,13 @@ broken_sasl_auth_clients = yes
 smtpd_tls_auth_only = yes
 smtpd_sasl_security_options = noanonymous, noplaintext
 smtpd_sasl_tls_security_options = noanonymous
+
+## SSL/TLS configuration
+smtpd_use_tls = yes
+smtpd_tls_security_level = may
+#smtpd_tls_session_cache_database = btree:$data_directory/smtpd_scache
+smtpd_tls_cert_file = {{TLS_CERT}}
+smtpd_tls_key_file = {{TLS_KEY}}
 
 # Main restrictions
 smtpd_helo_restrictions =

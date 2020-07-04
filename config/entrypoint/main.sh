@@ -21,10 +21,11 @@ sed -i 's|{{DATABASE_URL}}|'"$DATABASE_URL"'|' \
   /etc/postfix/vbox-domains.cf \
   /etc/postfix/vbox-maps.cf \
   /etc/postfix/valias-maps.cf \
+  /etc/postfix/sasl_password.cf \
   /etc/dovecot/sql-main.conf.ext
 # Substitute the SSL certificate locations in the config files
-KEY="${TLS_KEY:-/etc/letsencrypt/privkey.pem}"
-CERT="${TLS_CERT:-/etc/letsencrypt/fullchain.pem}"
+KEY="${TLS_KEY:-/etc/ssl/dovecot/server.key}"
+CERT="${TLS_CERT:-/etc/ssl/dovecot/server.pem}"
 sed -i 's|{{TLS_KEY}}|'"$KEY"'|' \
   /etc/postfix/main.cf \
   /etc/dovecot/conf.d/10-ssl.conf

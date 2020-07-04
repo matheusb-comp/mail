@@ -1,5 +1,14 @@
 -- Create the basic database tables used by Postfix
 
+CREATE TABLE IF NOT EXISTS relay_passwords (
+  id BIGSERIAL PRIMARY KEY,
+  relay VARCHAR NOT NULL,
+  username VARCHAR NOT NULL,
+  plain_password VARCHAR NOT NULL,
+  created_at TIMESTAMP NOT NULL,
+  updated_at TIMESTAMP NOT NULL
+);
+
 CREATE TABLE IF NOT EXISTS virtual_domains (
   id BIGSERIAL PRIMARY KEY,
   active BOOLEAN NOT NULL,
